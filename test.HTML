@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"  href="RR.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1> Gestion de projet </h1>
+    <div class="form">
+        <form action="" name="f1" method="post">
+            <div class="code">
+                <!-- <label for="">Code Projet </label><br> -->
+                <input type="text" id="code" placeholder="Code Projet" onkeyup="validcode()">
+            </div>
+            <div class="Libelle">
+                <!-- <label for="">Libelle Projet </label><br> -->
+                <input type="text" id="libelle" placeholder="Libelle Projet" onkeyup="validlible()">
+            </div>
+            <div class="Description">
+                <!-- <label for="">Description </label><br> -->
+                <textarea  id="description" cols="30" rows="5" placeholder="Description" onkeyup="validdescription()"></textarea>
+            </div>
+            <div class="Nature">
+                <input type="button" value="<<" class="btn1" id="firstIndex" onclick="firstindex()">
+                <label for="">Nature Projet </label>
+                <select id="nature">
+                    <option value="Informatique">Informatique</option>
+                    <option value="Mécanique">Mecanique</option>
+                    <option value="Electrique">Electrique</option>
+                    <option value="Construction-Batiment">Construction-Batiment</option>
+                    <input type="button" value=">" class="btn2" id="nextIndex" onclick="nextindex()">
+                </select>
+            </div class="Type">
+            <div>
+                <input type="button" value="<" class="btn3" id="backIndex" onclick="backindex()">
+                <label for="">Type Projet </label>
+                <input type="radio" name="ibi" id='interne' value="interne" checked>Interne
+                <input type="radio" name="ibi" id='externe' value="externe">Externe
+                <input type="button" value=">>" class="btn4" id="lastIndex" onclick="lastindex()">
+            </div>
+            <div class="Ressorces">
+                <label for="">Ressorces </label>
+                <br><br>
+                <input type="checkbox" id="humain" value="Humain">Humain 
+                <input type="checkbox" id="equipement" value="Equipement">Equipement <br>
+                <input type="checkbox" id="transport" value="Transport">Transport
+                <input type="checkbox" id="logiciel" value="Logiciel">Logiciel
+            </div>
+            <div class="Date_d">
+                <label for="">Date Debut </label><br>
+                <input type="date" id="date_debut">
+            </div>
+            <div class="Date_f">
+                <label for="">Date Fin </label><br>
+                <input type="date" id="date_fin" onchange="validDATE()">
+            </div>
+            <div class="Budget">
+                <!-- <label for="">Budget </label><br> -->
+                <input type="text" id="budget" placeholder="Budget" onkeyup="validbudge()">
+            </div>
+            <div class="grpbtn">
+                <input type="button" value="ajouter" onclick="ajouter()">
+                <input type="button" value="supprimer" onclick="supprimer()">
+                <input type="button" value="afficher" onclick="afficher()">
+                <input type="button" value="modifier" onclick="modifier()">
+                <input type="button" value="Chercher" onclick="chercher()">
+            </div>
+            <div>
+            </div>
+        </form>
+
+        <table class="table" border="" >
+            <tr>
+                <th >Code</th>
+                <th >Libelle</th>
+                <th >Description</th>
+                <th >Nature de projet</th>
+                <th >type de projets</th>
+                <th >ressources</th>
+                <th >date debut</th>
+                <th >date Fin</th>
+                <th >Budget</th>
+            </tr>
+            <tbody id="afficher">
+            </tbody>
+        </table>
+    </div>
+    <script>
+
+        function validcode(){
+            let code=document.getElementById('code');
+            let v=/^[A-Z]{1}\d{3}$/
+            if(v.test(code.value)){
+                code.style.border='3px solid green'
+                return true
+            }else{
+                code.style.border='3px solid red'
+                return false
+            }
+        }
+
+        function validlible(){
+            let libelle =document.getElementById('libelle');
+            let v=/^[A-Za-z0-9 ]+$/
+            if(v.test(libelle.value)){
+                libelle.style.border='3px solid green'
+                return true
+            }else{
+                libelle.style.border='3px solid red'
+                return false
+            }
+        }
+
+        function validdescription(){
+            let desc=document.getElementById('description');
+            let v=/^[A-Za-z0-9.,' ]+$/
+            if(v.test(desc.value)){
+                desc.style.border='3px solid green'
+                return true
+            }else{
+                desc.style.border='3px solid red'
+                return false
+            }
+        }
+
+        function validbudge(){
+            let budget=document.getElementById('budget');
+            let v=/^\d+\.?\d+$/
+            if(v.test(budget.value)){
+                budget.style.border='3px solid green'
+                return true
+            }else{
+                budget.style.border='3px solid red'
+                return false
+            }
+        }
+
+        function validDATE(){
+            let date_debut=document.getElementById('date_debut');
+            let date_fin=document.getElementById('date_fin');
+            if(date_debut.value<date_fin.value){
+                date_debut.style.border='3px solid green'
+                date_fin.style.border='3px solid green'
+                return true
+            }else{
+                date_fin.style.border='3px solid red'
+                date_fin.value=''
+                return false
+            }
+        }
+
+        let table=[]
+    
+        function ajouter(){
+            let code =document.getElementById('code').value;
+            let libelle =document.getElementById('libelle').value;
+            let desc=document.getElementById('description').value;
+            let nature=document.getElementById('nature').value;
+            let type=document.f1.ibi.value;
+            let Ressorces=''
+            if(document.getElementById('humain').checked){
+                Ressorces+=document.getElementById('humain').value+"";
+            }
+            if(document.getElementById('equipement').checked){
+                 Ressorces+=document.getElementById('equipement').value+"";
+            }
+            if(document.getElementById('transport').checked){
+                Ressorces+=document.getElementById('transport').value+"";
+            }
+            if(document.getElementById('logiciel').checked){
+                Ressorces+=document.getElementById('logiciel').value+"";
+            }
+            let date_debut=document.getElementById('date_debut').value;
+            let date_fin=document.getElementById('date_fin').value;
+            let budget=document.getElementById('budget').value;
+            for(var i=0;i<table.length;i++){
+                if(table[i].split("/")[0]===code){
+                    alert("code d'article existe déja");
+                    return false
+                }
+            }
+            let ht=code+"/"+libelle+"/"+desc+"/"+nature+"/"+type+"/"+Ressorces+"/"+date_debut+"/"+date_fin+"/"+budget;
+            table.push(ht);
+            alert("projet est ajouter")
+            eviter()
+                
+        }
+
+        function supprimer(){
+            let code = prompt("Donnez le code :");
+            for (let i = 0; i < table.length; i++){
+                if (table[i].split("/")[0] === code){
+                    table.splice(i, 1);
+                    alert("Le projet a été supprimé.");
+                    break;
+                }
+            }
+            afficher();
+        }
+
+        function afficher(){
+            let afficher=document.getElementById('afficher');
+            let html=''
+            for(let i=0;i<table.length;i++){
+                let v=table[i].split("/");
+                html+=`                
+                <tr>
+                    <td>${v[0]}</td>
+                    <td>${v[1]}</td>
+                    <td>${v[2]}</td>
+                    <td>${v[3]}</td>
+                    <td>${v[4]}</td>
+                    <td>${v[5]}</td>
+                    <td>${v[6]}</td>
+                    <td>${v[7]}</td>
+                    <td>${v[8]}</td>
+                </tr>`
+            }
+            afficher.innerHTML=html
+        }
+
+        function eviter(){
+            let libelle =document.getElementById('libelle')=" "
+            let desc=document.getElementById('description')=" "
+            let nature=document.getElementById('nature')=" "
+            let type=document.f1.ibi=" "
+            let Ressorces=" "
+            let date_debut=document.getElementById('date_debut')=" "
+            let date_fin=document.getElementById('date_fin')=" "
+            let budget=document.getElementById('budget')=" "
+            let code =document.getElementById('code')=" "
+        }
+
+        function modifier(){
+            let libelle =document.getElementById('libelle').value;
+            let desc=document.getElementById('description').value;
+            let nature=document.getElementById('nature').value;
+            let type=document.f1.ibi.value;
+            let Ressorces=''
+            if(document.getElementById('humain').checked){
+                Ressorces+=document.getElementById('humain').value+"";
+            }
+            if(document.getElementById('equipement').checked){
+                 Ressorces+=document.getElementById('equipement').value+"";
+            }
+            if(document.getElementById('transport').checked){
+                Ressorces+=document.getElementById('transport').value+"";
+            }
+            if(document.getElementById('logiciel').checked){
+                Ressorces+=document.getElementById('logiciel').value+"";
+            }
+            let date_debut=document.getElementById('date_debut').value;
+            let date_fin=document.getElementById('date_fin').value;
+            let budget=document.getElementById('budget').value;
+            let code =document.getElementById('code').value;
+            for(var i=0;i<table.length;i++){
+                if(table[i].split("/")[0]==code){
+                    let th=code+"/"+libelle+"/"+desc+"/"+nature+"/"+type+"/"+Ressorces+"/"+date_debut+"/"+date_fin+"/"+budget;
+                    table[i]=th
+                    afficher()
+                    alert("Bien Modification.")
+                    break;
+                }else{
+                    alert("Code Incorrect.")
+                }
+            }
+            
+        };
+
+        
+
+
+        function chercher(){
+            let code3=prompt("Donner le code a chercher")
+            for(var i=0;i<table.length;i++){
+                if(table[i].split("/")[0]==code3){
+                    alert(table[i])
+                }
+            } 
+        };
+
+
+
+
+
+
+
+
+        function clear(){
+            let libelle =document.getElementById('libelle').value=""
+            let desc=document.getElementById('description').value=''
+            let nature=document.getElementById('nature').value=''
+            let Ressorces=''
+            let date_debut=document.getElementById('date_debut').value=''
+            let date_fin=document.getElementById('date_fin').value=''
+            let budget=document.getElementById('budget').value=''
+            let code =document.getElementById('code').value=''
+        }
+
+
+
+
+
+
+
+
+        function titi(c){
+            var values = table[c].split("/");
+            document.getElementById('code').value=values[0]
+            document.getElementById('libelle').value=values[1]
+            document.getElementById('description').value=values[2]
+            document.getElementById('nature').value=values[3]
+            document.f1.ibi.value=values[4]
+
+            if(values[5].includes(document.getElementById('humain').value))
+                document.getElementById('humain').checked=true
+            else
+                document.getElementById('humain').checked=false
+            
+            if(values[5].includes(document.getElementById('equipement').value))
+                document.getElementById('equipement').checked=true
+            else
+                document.getElementById('equipement').checked=false
+
+            if(values[5].includes(document.getElementById('transport').value))
+                document.getElementById('transport').checked=true
+            else
+                document.getElementById('transport').checked=false
+            
+            if(values[5].includes(document.getElementById('logiciel').value))
+                document.getElementById('logiciel').checked=true
+            else
+                document.getElementById('logiciel').checked=false
+
+                
+            document.getElementById('date_debut').value=values[6]
+            document.getElementById('date_fin').value=values[7]
+            document.getElementById('budget').value=values[8]
+        }
+
+
+        c=0
+
+        function firstindex() {
+            var values = table[c].split("/");
+            document.getElementById('code').value=values[0]
+            document.getElementById('libelle').value=values[1]
+            document.getElementById('description').value=values[2]
+            document.getElementById('nature').value=values[3]
+            document.f1.ibi.value=values[4]
+
+            if(values[5].includes(document.getElementById('humain').value))
+                document.getElementById('humain').checked=true
+            else
+                document.getElementById('humain').checked=false
+            
+            if(values[5].includes(document.getElementById('equipement').value))
+                document.getElementById('equipement').checked=true
+            else
+                document.getElementById('equipement').checked=false
+
+            if(values[5].includes(document.getElementById('transport').value))
+                document.getElementById('transport').checked=true
+            else
+                document.getElementById('transport').checked=false
+            
+            if(values[5].includes(document.getElementById('logiciel').value))
+                document.getElementById('logiciel').checked=true
+            else
+                document.getElementById('logiciel').checked=false
+
+                
+            document.getElementById('date_debut').value=values[6]
+            document.getElementById('date_fin').value=values[7]
+            document.getElementById('budget').value=values[8]
+        }        
+
+        function firstindex (){
+            titi(c)
+        }
+
+        function lastindex() {
+            c = table.length - 1;
+            titi(c)
+        }
+
+        function nextindex() {
+            if (c < table.length-1) {
+                c++;
+                titi(c)
+            }
+        }
+
+        function backindex() {
+            if (c > 0) {
+                c--;
+                titi(c)
+            }
+        }
+    </script>
+    
+</body>
+</html>
